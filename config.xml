@@ -1,0 +1,57 @@
+<config>
+  
+
+  
+
+  
+  <lea_xlsx_file>Beispiel_LEA-Ausgabe_LAA.xlsx</lea_xlsx_file>
+
+  
+  <lea_primary_key>LEAID</lea_primary_key>
+
+  
+  <lea_gruppe_laa_lehramt>ja</lea_gruppe_laa_lehramt>
+
+  
+  <lea_gruppe_laa_lehramt_jg>ja</lea_gruppe_laa_lehramt_jg>
+
+  
+  <lea_gruppe_laa_seminare>ja</lea_gruppe_laa_seminare>
+  
+  <lea_outputpath>LEA-Output</lea_outputpath>
+  
+
+  
+  <logineo_csv_file>Beispiel_LOGINEO-Ausgabe_LAA.xls</logineo_csv_file>
+  
+  <logineo_xml_file />
+  
+  
+  <logineo_xml_user_tag />
+  <logineo_xml_tag_lastname>Nachname</logineo_xml_tag_lastname>
+  <logineo_xml_tag_firstname>Vorname</logineo_xml_tag_firstname>
+  <logineo_xml_tag_email>E-Mailadresse</logineo_xml_tag_email>
+  <logineo_xml_tag_password>Kennwort</logineo_xml_tag_password>
+  <logineo_xml_tag_safe_password>Datensafe-Einmalkennwort</logineo_xml_tag_safe_password>
+  <logineo_xml_tag_system>Kontotyp</logineo_xml_tag_system>
+  <logineo_xml_tag_group>Gruppe</logineo_xml_tag_group>
+
+  
+  <logineo_csv_delimiter>,</logineo_csv_delimiter>
+
+  
+  <pdf_outputpath>LOGINEO-PDF-Output</pdf_outputpath>
+
+  
+  <pdf_logineolink>zfsl-deinestadt.nrw.schule</pdf_logineolink>
+
+  
+  <pdf_supportname>Max Mustermann</pdf_supportname>
+
+  
+  <pdf_supportmail>max.mustermann@zfsl-deinestadt.nrw.schule</pdf_supportmail>
+
+  
+  <pdf_einzeln>ja</pdf_einzeln>
+  <pdf_lehramt>ja</pdf_lehramt>
+</config>

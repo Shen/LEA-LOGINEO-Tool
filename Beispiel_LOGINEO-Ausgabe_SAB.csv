@@ -1,0 +1,12 @@
+Nachname,Vorname,E-Mailadresse,E-Mailadresse,Kontotyp,Quell-Id,Fachbereich,Gruppe,Gruppe,Kennwort,Datensafe-Einmalkennwort,Zum Löschen freigegeben,Interne Id,Meldungen,Importstatus
+" Worms",Katja,katja.worms@test.example.com,katja.worms@11111.example.com,,10788,Seminar_SF,SAB_SF,SAB,,,Nein,66e44df-7bfe-40564-b1ac-a0f45fb1858f,,Aktualisiert
+" Schlegel",Dieter,Dieter.schlegel@test.example.com,dieter.schlegel@11111.example.com,,2.10678822E9,Seminar_G,SAB_G,SAB,,,Nein,5456767c-8ae0-4c4d-4564-887d545436e8,,Aktualisiert
+Klabau,Anja,anja.klabau@test.example.com,anja.klabau@11111.example.com,,1.1111678E7,Seminar_HRSGe,SAB_HRSGe,SAB,,,Nein,e645694b-b0e7-42e0-8826-592f05456679,,Aktuell
+" Zöllner",Maja,maja.zoellner@test.example.com,maja.zoellner@11111.example.com,,2.1013678E9,Seminar_SF,SAB_SF,SAB,,,Nein,23a456d6-d62b-43e1-8979-52456263e830,,Aktualisiert
+" Hedera",Maxime,maxime.hedera@test.example.com,maxime.hedera@11111.example.com,,4780,Seminar_GyGe,SAB_GyGe,SAB,,,Nein,8245624f-d3c0-4490-9128-b70456c3e420,,Aktualisiert
+Zager,Leonard,leonard.zarger@test.example.com,leonard.zarger@11111.example.com,,2787,Seminar_BK,SAB_BK,SAB,,,Nein,47ea411c-cf15-456d-a14f-9a644562506a1,,Aktuell
+" Blattner",Frieda,frieda.blattner@test.example.com,frieda.blattner@11111.example.com,,3786,Seminar_HRSGe,SAB_HRSGe,SAB,,,Nein,b451504c-ca74-4d1e-884f-326454576f37,,Aktualisiert
+Torben,Justus,justus.torben@test.example.com,justus.torben@11111.example.com,,1.1111167E7,Seminar_BK,SAB_BK,SAB,,,Nein,07544467-8d04-41ca-b18c-4a5e34565fb5,,Aktuell
+Gablek,Yusuf,yusuf.gablek@test.example.com,yusuf.gablek@11111.example.com,,1.1111123E7,Seminar_G,SAB_G,SAB,,,Nein,5655fe17-faf7-49d7-bd13-d4d673453320,,Aktuell
+Raumann,Kamela,kamela.raumann@test.example.com,"""kamela.raumann@11111.example.com""",Lehrkraft,1.1111156E7,Seminar_SF,SAB_SF,SAB,675awN4mB7u,K$Q(d4WnHc,Nein,bd95b3b6-deb4-4dae-a996-144563345a9c8,,Erstellt
+Blattner,Fritz,fritz.blattner@test.example.com,"""fritz.blattner@11111.example.com""",Lehrkraft,1.1111112E7,Seminar_G,SAB_G,SAB,342awN4mB7u,K$Q(d4WnHc,Nein,bd6543b6-deb4-4dae-a996-14978b2ba934,,Erstellt

@@ -1,0 +1,10 @@
+Nachname,Vorname,E-Mailadresse,E-Mailadresse,E-Mailadresse,Kontotyp,Quell-Id,Fachbereich,Gruppe,Gruppe,Gruppe,Gruppe,Gruppe,System,Kennwort,Datensafe-Einmalkennwort,Zum Löschen freigegeben,Interne Id,Meldungen,Importstatus
+" Fischer",Marie,marie.fischer@test.example.com,marie.fischer@11111.example.com,,,564636,Seminar_GyGe,LAA_GyGe,LAA_GyGe_2023-11,,,,LAA,,,Nein,b532ccb2-8546-42db-9462-6d238c67fc8e,,Aktualisiert
+" Wagner",Jonas,jonas.wagner@test.example.com,jonas.wagner@11111.example.com,,,567311,Seminar_SF,LAA_SF,LAA_SF_2024-05,,,,LAA,,,Nein,db8ab1ef-b85a-46ff-8c07-9845664d7bfa,,Aktualisiert
+" Hartmann,Johanna,johanna.hartmann@test.example.com,johanna.hartmann@11111.example.com,,,345035,Seminar_GyGe,LAA_GyGe_2025-05,LAA_GyGe,,,,,,,Ja,5bdbb8dc-7403-453e-bf5a-95640d6a78e2,,Abgelaufen
+" Schwarz",Emily,emily.schwarz@test.example.com,emily.schwarz@11111.example.com,,,264663,Seminar_SF,LAA_SF,LAA_SF_2023-11,,,,LAA,,,Nein,8808fca3-f026-4cbe-869f-67560b3b32cd,,Aktualisiert
+" Fischer",Lena,lena.fischer@test.example.com,"""lena.fischer@11111.example.com""",,LAA,234507,Seminar_SF,LAA_SF,LAA_SF_2025-05,,,,LAA,$D34rAQP8b,,Nein,37e04c90-6742-4654-a3c6-48d43ce0bdc3,,Erstellt
+" Richter",Lina,lina.richter@test.example.com,"""lina.richter@11111.example.com""",,LAA,277534,Seminar_G,LAA_G,LAA_G_2025-05,,,,LAA,w?6346cgg4JM,,Nein,e0aea0c4-345e-45f8-bc72-f2c6729182a6,,Erstellt
+" Schmidt",Sophie,sophie.schmidt@test.example.com,"""sophie.schmidt@11111.example.com""",,LAA,277535,Seminar_SF,LAA_SF,LAA_SF_2025-05,,,,LAA,eT-AW34ynJ55,,Nein,345a9bc-e313-4422-8c66-a456be655de9,,Erstellt
+" Hartmann",Max,max.hartmann@test.example.com,"""max.hartmann@11111.example.com""",,LAA,2127520,Seminar_HRSGe,LAA_HRSGe,LAA_HRSGe_2025-05,,,,LAA,8634qrGNVUw,,Nein,33456256-ebeb-49b0-9d68-f7bd8eded511,,Erstellt
+" Wolf",Johanna,johanna.wolf@test.example.com,"""johanna.wolf@11111.example.com""",,LAA,271290,Seminar_HRSGe,LAA_HRSGe,LAA_HRSGe_2025-05,,,,LAA,tpq34?32NBC,,Nein,91ce343d-a35e-4755-ad07-5f946606429a,,Erstellt
