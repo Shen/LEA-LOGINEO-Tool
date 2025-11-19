@@ -39,6 +39,21 @@ def _to_int_like(s: str) -> int | None:
         return None
 
 
+def _normalize_numeric_text(value: str) -> str:
+    """
+    Gibt numerische Strings (auch '123.0') als saubere Textwerte zurück.
+    Das verhindert, dass Excel sie später als Gleitkommazahlen speichert
+    und 8-stellige IDs in die wissenschaftliche Notation zwingt.
+    """
+    if not value:
+        return ""
+    cleaned = value.strip()
+    if not cleaned:
+        return ""
+    as_int = _to_int_like(cleaned)
+    return f"{as_int:d}" if as_int is not None else cleaned
+
+
 @dataclass
 class OutputRow:
     LEAID: Any = ""
@@ -59,8 +74,7 @@ class OutputRow:
 
         # LEAID
         leaid_raw = _read_str(src, "LAA_Logineo")
-        leaid_int = _to_int_like(leaid_raw)
-        row.LEAID = leaid_int if leaid_int is not None else ""
+        row.LEAID = _normalize_numeric_text(leaid_raw)
 
         # IdentNr
         ident = _read_str(src, "LAA_IdentNr")
@@ -137,8 +151,7 @@ class FailRow:
         fr = FailRow()
         # LEAID
         leaid_raw = _read_str(src, "LAA_Logineo")
-        leaid_int = _to_int_like(leaid_raw)
-        fr.LEAID = leaid_int if leaid_int is not None else ""
+        fr.LEAID = _normalize_numeric_text(leaid_raw)
 
         # IdentNr
         ident = _read_str(src, "LAA_IdentNr")
@@ -169,9 +182,9 @@ class FailRow:
 
 class LEAConverter:
     """
-    Liest LEA-Excel (.xlsx), baut LOGINEO-Importtabelle und schreibt zwei Dateien:
-      - output/<timestamp>_referendare.xlsx
-      - output/<timestamp>_Referendare_FEHLER.xlsx (falls vorhanden)
+    Liest LEA-Excel (.xlsx), baut LOGINEO-Importtabelle und schreibt (abhängig von
+    der Einstellung) eine Ausgabe-Datei (.csv oder .xlsx) sowie optional eine
+    Fehlerliste als Excel-Datei.
     """
 
     def __init__(self, settings: Settings) -> None:
@@ -194,6 +207,11 @@ class LEAConverter:
         if self.s.lea_gruppe_laa_seminare == "ja":
             cols += ["Kernseminar", "Fachseminar_1", "Fachseminar_2"]
         return cols
+
+    def _output_format(self) -> str:
+        fmt = getattr(self.s, "lea_output_format", "csv") or "csv"
+        fmt = fmt.strip().lower()
+        return fmt if fmt in {"csv", "xlsx"} else "csv"
 
     def convert(self) -> None:
         print("\nIhre LEA-Excel-Datei wird nun eingelesen.\n")
@@ -251,6 +269,14 @@ class LEAConverter:
         df_ok = pd.DataFrame(rows_ok, columns=ok_cols)
         df_err = pd.DataFrame(rows_err, columns=["LEAID", "IdentNr", "Nachname", "Vorname", "Typ", "Lehramt"])
 
+        # Sicherstellen, dass ID-Spalten wirklich als Text exportiert werden
+        for target in (df_ok, df_err):
+            for col in ("LEAID", "IdentNr"):
+                if col in target.columns:
+                    target[col] = target[col].apply(
+                        lambda v: "" if (v is None or pd.isna(v)) else str(v)
+                    )
+
         if not df_err.empty:
             print("\nEinige importierte Zeilen weisen Probleme auf (siehe unten):")
             print(df_err)
@@ -265,11 +291,24 @@ class LEAConverter:
             print(df_ok)
 
             pause("\nÜberprüfen Sie die Daten. Wenn alles gut aussieht, Drücken Sie eine beliebige Taste, um fortzufahren.")
-            out_name = f"{self.dt_string}_referendare.xlsx"
-            df_ok.to_excel(os.path.join(self.output_dir, out_name), sheet_name="Referendare", index=False)
+            out_name_xlsx = f"{self.dt_string}_referendare.xlsx"
+            out_name_csv = f"{self.dt_string}_referendare.csv"
+            out_path_xlsx = os.path.join(self.output_dir, out_name_xlsx)
+            out_path_csv = os.path.join(self.output_dir, out_name_csv)
 
-            print(f"\nDie Datei wurde im Ordner '{self.output_dir}' angelegt.")
-            print("Sie können diese Datei nun in der Nutzerverwaltung LOGINEO NRW importieren.")
+            output_format = self._output_format()
+            created_desc: List[str] = []
+            if output_format == "xlsx":
+                df_ok.to_excel(out_path_xlsx, sheet_name="Referendare", index=False)
+                created_desc.append(f"- {out_name_xlsx}")
+            else:
+                df_ok.to_csv(out_path_csv, index=False, encoding="utf-8-sig", lineterminator="\n")
+                created_desc.append(f"- {out_name_csv} (UTF-8-BOM, Zeilenende LF)")
+
+            print(f"\nDie Datei wurde im Ordner '{self.output_dir}' angelegt:")
+            for desc in created_desc:
+                print(desc)
+            print("Sie können diese Dateien nun in der Nutzerverwaltung LOGINEO NRW importieren.")
             print(f"Ergebnisse wurden im Output-Ordner abgelegt: '{self.output_dir}'.")
             pause("\nDrücken Sie eine beliebige Taste, um das Programm zu beenden.")
             return

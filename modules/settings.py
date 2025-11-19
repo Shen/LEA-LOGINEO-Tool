@@ -34,6 +34,7 @@ class Settings:
     pdf_supportmail: str = ""
     pdf_einzeln: str = "ja"          # "ja"/"nein"
     pdf_lehramt: str = "nein"         # "ja"/"nein"
+    lea_output_format: str = "csv"
 
 
 def _get_text(root: ET.Element, tag: str, default: str = "") -> str:
@@ -84,6 +85,21 @@ def _norm_primary_key(value: str) -> str:
     return "LEAID"
 
 
+def _norm_output_format(value: str) -> str:
+    """
+    Normalisiert das Ausgabeformat für die LEA-Konvertierung.
+    Erlaubt: 'csv' (Standard) oder 'xlsx'.
+    """
+    v_raw = value or ""
+    v = v_raw.strip().lower()
+    if v == "":
+        return "csv"
+    if v in ("csv", "xlsx"):
+        return v
+    _warn_invalid(v_raw, "lea_output_format", "csv")
+    return "csv"
+
+
 def load_settings(config_path: str) -> Settings:
     with open(config_path, "r", encoding="utf-8") as f:
         xml_text = f.read()
@@ -97,6 +113,7 @@ def load_settings(config_path: str) -> Settings:
     laa_jg_raw             = _get_text(root, "lea_gruppe_laa_lehramt_jg", "ja")
     laa_seminare_raw       = _get_text(root, "lea_gruppe_laa_seminare", "ja")
     lea_outputpath         = _get_text(root, "lea_outputpath", "output")
+    lea_output_format_raw  = _get_text(root, "lea_output_format", "csv")
 
     logineo_csv_file       = _get_text(root, "logineo_csv_file")
     logineo_xml_file       = _get_text(root, "logineo_xml_file", "")
@@ -122,6 +139,7 @@ def load_settings(config_path: str) -> Settings:
     lea_gruppe_laa_lehramt     = _norm_yes_no(laa_lehramt_raw,      varname="lea_gruppe_laa_lehramt",    default_yes=True)
     lea_gruppe_laa_lehramt_jg  = _norm_yes_no(laa_jg_raw,           varname="lea_gruppe_laa_lehramt_jg", default_yes=True)
     lea_gruppe_laa_seminare    = _norm_yes_no(laa_seminare_raw,     varname="lea_gruppe_laa_seminare",   default_yes=True)
+    lea_output_format          = _norm_output_format(lea_output_format_raw)
 
     # (Optional) Auch PDF-Flags robust normalisieren + warnen
     pdf_einzeln                = _norm_yes_no(pdf_einzeln_raw,      varname="pdf_einzeln",               default_yes=True)
@@ -135,6 +153,7 @@ def load_settings(config_path: str) -> Settings:
         lea_gruppe_laa_lehramt_jg=lea_gruppe_laa_lehramt_jg,
         lea_gruppe_laa_seminare=lea_gruppe_laa_seminare,
         lea_outputpath=lea_outputpath,
+        lea_output_format=lea_output_format,
         # PDF
         logineo_csv_file=logineo_csv_file,
         logineo_xml_file=(logineo_xml_file or ""),
@@ -184,6 +203,7 @@ def save_settings(config_path: str, s: Settings) -> None:
     set_text("lea_gruppe_laa_lehramt_jg", s.lea_gruppe_laa_lehramt_jg)
     set_text("lea_gruppe_laa_seminare", s.lea_gruppe_laa_seminare)
     set_text("lea_outputpath", s.lea_outputpath)
+    set_text("lea_output_format", s.lea_output_format)
 
     # LOGINEO / PDF
     set_text("logineo_csv_file", s.logineo_csv_file)

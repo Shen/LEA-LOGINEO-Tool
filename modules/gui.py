@@ -62,6 +62,7 @@ class App(tk.Tk):
                 lea_gruppe_laa_lehramt_jg="ja",
                 lea_gruppe_laa_seminare="ja",
                 lea_outputpath="output",
+                lea_output_format="csv",
                 logineo_csv_file="",
                 logineo_xml_file="",
                 logineo_csv_delimiter=",",
@@ -85,7 +86,8 @@ class App(tk.Tk):
 
     # ---------------- UI ----------------
     def _build_ui(self) -> None:
-        pad = {"padx": 10, "pady": 8}
+        padx = 10
+        pady = 8
 
         # Header (ohne globalen Einstellungen-Button)
         header = ttk.Frame(self)
@@ -93,7 +95,7 @@ class App(tk.Tk):
 
         # Tabs
         notebook = ttk.Notebook(self)
-        notebook.pack(fill=tk.BOTH, expand=True, **pad)
+        notebook.pack(fill=tk.BOTH, expand=True, padx=padx, pady=pady)
 
         # Small color swatches for tabs (for subtle color hints)
         def _mk_swatch(color: str) -> tk.PhotoImage:
@@ -247,7 +249,7 @@ class App(tk.Tk):
 
         # Log
         frm_log = ttk.LabelFrame(self, text="Protokoll")
-        frm_log.pack(fill=tk.BOTH, expand=True, **pad)
+        frm_log.pack(fill=tk.BOTH, expand=True, padx=padx, pady=pady)
         self.txt = tk.Text(frm_log, wrap=tk.WORD, state=tk.DISABLED)
         self.txt.pack(fill=tk.BOTH, expand=True, side=tk.LEFT)
         sb = ttk.Scrollbar(frm_log, orient=tk.VERTICAL, command=self.txt.yview)
@@ -519,6 +521,15 @@ class SettingsDialog(tk.Toplevel):
         self.var_laa_jg = tk.BooleanVar(value=yesno_to_bool(settings.lea_gruppe_laa_lehramt_jg))
         self.var_laa_seminare = tk.BooleanVar(value=yesno_to_bool(settings.lea_gruppe_laa_seminare))
         self.var_lea_out = tk.StringVar(value=settings.lea_outputpath or "output")
+        self._lea_format_options = [
+            ("csv", "CSV"),
+            ("xlsx", "XLSX (nicht empfohlen)"),
+        ]
+        self._lea_format_label_by_value = {value: label for value, label in self._lea_format_options}
+        self._lea_format_value_by_label = {label: value for value, label in self._lea_format_options}
+        fmt_value = (settings.lea_output_format or "csv").strip().lower()
+        default_label = self._lea_format_label_by_value.get(fmt_value, self._lea_format_label_by_value.get("csv", "CSV"))
+        self.var_lea_format = tk.StringVar(value=default_label)
 
         self.var_csv_delim = tk.StringVar(value=settings.logineo_csv_delimiter or ",")
         self.var_pdf_out = tk.StringVar(value=settings.pdf_outputpath or "pdf-files")
@@ -546,7 +557,15 @@ class SettingsDialog(tk.Toplevel):
             ttk.Label(frm_lea, text="LEA-Ausgabeordner:").grid(row=4, column=0, sticky=tk.W, padx=4, pady=4)
             ttk.Entry(frm_lea, textvariable=self.var_lea_out, width=50).grid(row=4, column=1, sticky=tk.W, padx=4, pady=4)
             ttk.Button(frm_lea, text="…", width=3, command=self._pick_lea_outdir).grid(row=4, column=2, padx=4, pady=4)
-            ttk.Label(frm_lea, text="Hinweis: Die LEA-Excel-Datei wird im Hauptfenster gewählt.", foreground="#555").grid(row=5, column=0, columnspan=3, sticky=tk.W, padx=4, pady=(2, 2))
+            ttk.Label(frm_lea, text="Ausgabeformat:").grid(row=5, column=0, sticky=tk.W, padx=4, pady=4)
+            ttk.Combobox(
+                frm_lea,
+                textvariable=self.var_lea_format,
+                values=[label for _, label in self._lea_format_options],
+                state="readonly",
+                width=28,
+            ).grid(row=5, column=1, sticky=tk.W, padx=4, pady=4)
+            ttk.Label(frm_lea, text="Hinweis: Die LEA-Excel-Datei wird im Hauptfenster gewaehlt.", foreground="#555").grid(row=6, column=0, columnspan=3, sticky=tk.W, padx=4, pady=(2, 2))
 
         # LOGINEO Optionen
         if self._section in ("logineo", "all"):
@@ -586,6 +605,8 @@ class SettingsDialog(tk.Toplevel):
     def _save(self) -> None:
         def yn(b: bool) -> str:
             return "ja" if b else "nein"
+        fmt_label = self.var_lea_format.get()
+        lea_output_format = self._lea_format_value_by_label.get(fmt_label, "csv")
 
         s = Settings(
             # LEA (Pfade bleiben unverändert, nur Optionen übernehmen)
@@ -595,6 +616,7 @@ class SettingsDialog(tk.Toplevel):
             lea_gruppe_laa_lehramt_jg=yn(self.var_laa_jg.get()),
             lea_gruppe_laa_seminare=yn(self.var_laa_seminare.get()),
             lea_outputpath=self.var_lea_out.get().strip() or "output",
+            lea_output_format=lea_output_format,
             # LOGINEO & PDF
             logineo_csv_file=self._orig.logineo_csv_file,
             logineo_xml_file=self._orig.logineo_xml_file,

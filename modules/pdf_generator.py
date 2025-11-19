@@ -171,7 +171,12 @@ class PDFGenerator:
                     return header_index is not None and field in header_index
 
                 def get_field(field: str) -> str:
-                    return row[header_index[field]] if has_field(field) else ""
+                    if not has_field(field) or header_index is None:
+                        return ""
+                    idx = header_index.get(field)
+                    if idx is None or idx >= len(row):
+                        return ""
+                    return row[idx]
 
                 if has_field("Kennwort") and get_field("Kennwort") == "":
                     continue
@@ -314,7 +319,7 @@ class PDFGenerator:
         # Logo
         logineologo = resolve_path("assets/LOGINEO-NRW.png")
         im = Image(logineologo, 477, 105)
-        im._restrictSize(4 * cm, 8 * cm)
+        im._restrictSize(4 * cm, 8 * cm)  # type: ignore[attr-defined]
         story.append(im)
 
         # Anrede & Name
