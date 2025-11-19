@@ -19,6 +19,7 @@
   <lea_gruppe_laa_seminare>ja</lea_gruppe_laa_seminare>
   
   <lea_outputpath>LEA-Output</lea_outputpath>
+  <lea_output_format>csv</lea_output_format>
   
 
   
